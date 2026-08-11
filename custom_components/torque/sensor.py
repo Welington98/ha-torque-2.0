@@ -17,6 +17,7 @@ from homeassistant.components.sensor import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
+from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.entity_registry import (
     async_get as async_get_entity_registry,
@@ -629,86 +630,15 @@ class TorqueSensor(RestoreSensor, SensorEntity):
         return 2
 
     @property
-    def device_info(self) -> dict[str, Any]:
+    def device_info(self) -> DeviceInfo:
         """Return device information for this sensor.
 
         Returns:
             Device information dictionary
         """
-        return {
-            "identifiers": {(DOMAIN, self._vehicle)},
-            "name": f"Torque {self._vehicle}",
-            "manufacturer": "Torque Pro",
-            "model": "OBD Vehicle Data",
-        }
-
-    def _pick_icon(
-        self, name: str, unit: str | None, device_class: str | None
-    ) -> str | None:
-        """Legacy method for icon selection - kept for compatibility.
-
-        Args:
-            name: Sensor name
-            unit: Unit of measurement
-            device_class: Device class
-
-        Returns:
-            Icon string or None
-        """
-        return self._determine_icon(name)
-
-    def _guess_state_class(self, unit: str | None, name: str | None) -> str | None:
-        """Legacy method for state class guessing - kept for compatibility.
-
-        Args:
-            unit: Unit of measurement
-            name: Sensor name
-
-        Returns:
-            State class string
-        """
-        return SensorStateClass.MEASUREMENT
-
-    def _pick_icon(
-        self, name: str | None, unit: str | None, device_class: str | None
-    ) -> str | None:
-        """Pick an appropriate icon for the sensor based on name and unit."""
-        if not name:
-            return None
-
-        name_lower = name.lower()
-
-        # Speed sensors
-        if "speed" in name_lower:
-            return "mdi:speedometer"
-
-        # Temperature sensors
-        if any(
-            word in name_lower for word in ["temp", "temperature", "coolant", "intake"]
-        ):
-            return "mdi:thermometer"
-
-        # Fuel related
-        if any(
-            word in name_lower for word in ["fuel", "gas", "consumption", "mpg", "gal"]
-        ):
-            return "mdi:gas-station"
-
-        # Engine/RPM
-        if any(word in name_lower for word in ["rpm", "engine"]):
-            return "mdi:engine"
-
-        # Voltage/Battery
-        if any(word in name_lower for word in ["volt", "battery"]):
-            return "mdi:car-battery"
-
-        # Pressure
-        if "pressure" in name_lower:
-            return "mdi:gauge"
-
-        # Distance/Odometer
-        if any(word in name_lower for word in ["distance", "odometer", "trip"]):
-            return "mdi:map-marker-distance"
-
-        # Default car icon
-        return "mdi:car"
+        return DeviceInfo(
+            identifiers={(DOMAIN, self._vehicle)},
+            name=f"Torque {self._vehicle}",
+            manufacturer="Torque Pro",
+            model="OBD Vehicle Data",
+        )

@@ -21,10 +21,10 @@
         "**/*.pyo": true
     },
     "yaml.schemas": {
-        "https://json.schemastore.org/github-workflow.json": "file:///workspaces/ha-torque-2.0/.github/workflows/*",
+        "https://json.schemastore.org/github-workflow.json": ".github/workflows/*",
         "https://json.schemastore.org/home-assistant.json": [
-            "file:///workspaces/ha-torque-2.0/config/**/*.yaml",
-            "file:///workspaces/ha-torque-2.0/config/*.yaml"
+            "config/**/*.yaml",
+            "config/*.yaml"
         ]
     },
     "python.testing.pytestEnabled": true,
