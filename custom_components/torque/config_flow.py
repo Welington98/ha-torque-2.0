@@ -96,19 +96,11 @@ class TorqueConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         Returns:
             TorqueOptionsFlow instance
         """
-        return TorqueOptionsFlow(config_entry)
+        return TorqueOptionsFlow()
 
 
 class TorqueOptionsFlow(config_entries.OptionsFlow):
     """Handle options flow for Torque integration."""
-
-    def __init__(self, config_entry: config_entries.ConfigEntry) -> None:
-        """Initialize options flow.
-
-        Args:
-            config_entry: The config entry for this integration
-        """
-        self.config_entry = config_entry
 
     async def async_step_init(
         self, user_input: dict[str, Any] | None = None
